@@ -85,7 +85,7 @@ class wechatCallbackapiTest
                         $contentStr = $reco;
                         $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                         echo $resultStr;
-                        $this->saveMsg($fromUsername, $mediaId.$format, $resultStr);
+                        $this->saveMsg($fromUsername, $mediaId.".".$format, $resultStr);
                 }
 
         }else {
@@ -105,7 +105,7 @@ class wechatCallbackapiTest
 
     private function saveMsg($fromUsername, $content, $resultStr)
     {
-        if(($logFile = fopen("msglog.txt","a+")) != NULL)
+        if(($logFile = fopen("msglog.log","a+")) != NULL)
         {
             $timestr = "[" . date('y-m-d h:i:s',time()) . "]";
             $username = "From: " . $fromUsername;
@@ -132,7 +132,7 @@ class wechatCallbackapiTest
 
         $return_code = curl_getinfo ( $ch, CURLINFO_HTTP_CODE );
 
-        $filename = $mediaId.$format;
+        $filename = $mediaId.".".$format;
         $fp= @fopen("tmp/".$filename,"a"); //将文件绑定到流 
         fwrite($fp,$return_content);
     }
