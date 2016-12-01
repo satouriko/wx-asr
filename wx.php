@@ -52,15 +52,16 @@ class wechatCallbackapiTest
 							<MsgType><![CDATA[%s]]></MsgType>
 							<Content><![CDATA[%s]]></Content>
 							<FuncFlag>0</FuncFlag>
-							</xml>";             
+							</xml>";
 				if(!empty( $keyword ))
                 {
               		$msgType = "text";
-                	$contentStr = "Welcome to wechat world!";
+                	$contentStr = $this->replyByKeyword($keyword);
                 	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                 	echo $resultStr;
+                    $this->saveMsg($fromUsername, $keyword, $resultStr);
                 }else{
-                	echo "Input something...";
+                	echo "Input something QwQ";
                 }
 
         }else {
@@ -68,25 +69,49 @@ class wechatCallbackapiTest
         	exit;
         }
     }
-		
+
+    private function replyByKeyword($keyword) {
+        switch ($keyword) {
+            case "你好":
+                return "你好！";
+            default:
+                return "欢迎使用李家豪的Pi-Car语音控制测试号！ <a href='http://linux.cool2645.com/pi/'>Pi-Car Index</a> <a href='https://github.com/hudson6666/wx-csr'>本项目Repo</a> ";
+        }
+    }
+
+    private function saveMsg($fromUsername, $content, $resultStr)
+    {
+        if(($logFile = fopen("msglog.txt","a+")) != NULL)
+        {
+            $timestr = "[" . date('y-m-d h:i:s',time()) . "]";
+            $username = "From: " . $fromUsername;
+            $content = "Content: " . $content;
+            $resultStr = "Reply: " . $resultStr;
+            $splitter = "************************************";
+            fwrite($logFile,$timestr . "\n" . $username . "\n" . $content . "\n" . $resultStr . "\n" . $splitter . "\n");
+        }
+        else
+            echo "Log file open error!";
+    }
+
 	public function checkSignature()
 	{
         // you must define TOKEN by yourself
         if (!defined("TOKEN")) {
             throw new Exception('TOKEN is not defined!');
         }
-        
+
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
-        		
+
 		$token = TOKEN;
 		$tmpArr = array($token, $timestamp, $nonce);
         // use SORT_STRING rule
 		sort($tmpArr, SORT_STRING);
 		$tmpStr = implode( $tmpArr );
 		$tmpStr = sha1( $tmpStr );
-		
+
 		if( $tmpStr == $signature ){
 			return true;
 		}else{
