@@ -43,9 +43,12 @@ class wechatCallbackapiTest
               	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
                 $fromUsername = $postObj->FromUserName;
                 $toUsername = $postObj->ToUserName;
-                $keyword = trim($postObj->Content);
-                $time = time();
-                $textTpl = "<xml>
+                $msgType = $postObj->MsgType;
+                switch ($msgType) {
+                    case "text":
+                        $keyword = trim($postObj->Content);
+                        $time = time();
+                        $textTpl = "<xml>
 							<ToUserName><![CDATA[%s]]></ToUserName>
 							<FromUserName><![CDATA[%s]]></FromUserName>
 							<CreateTime>%s</CreateTime>
@@ -53,15 +56,36 @@ class wechatCallbackapiTest
 							<Content><![CDATA[%s]]></Content>
 							<FuncFlag>0</FuncFlag>
 							</xml>";
-				if(!empty( $keyword ))
-                {
-              		$msgType = "text";
-                	$contentStr = $this->replyByKeyword($keyword);
-                	$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
-                	echo $resultStr;
-                    $this->saveMsg($fromUsername, $keyword, $resultStr);
-                }else{
-                	echo "Input something QwQ";
+                        if(!empty( $keyword ))
+                        {
+                            $msgType = "text";
+                            $contentStr = $this->replyByKeyword($keyword);
+                            $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                            echo $resultStr;
+                            $this->saveMsg($fromUsername, $keyword, $resultStr);
+                        }else{
+                            echo "Input something QwQ";
+                        }
+                        break;
+                    case "voice":
+                        $mediaId = $postObj->MediaId;
+                        $format = $postObj->Format;
+                        $this->http_get_data($mediaId, $format);
+                        $reco = $postObj->Recognition;
+                        $time = time();
+                        $textTpl = "<xml>
+							<ToUserName><![CDATA[%s]]></ToUserName>
+							<FromUserName><![CDATA[%s]]></FromUserName>
+							<CreateTime>%s</CreateTime>
+							<MsgType><![CDATA[%s]]></MsgType>
+							<Content><![CDATA[%s]]></Content>
+							<FuncFlag>0</FuncFlag>
+							</xml>";
+                        $msgType = "text";
+                        $contentStr = $reco;
+                        $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+                        echo $resultStr;
+                        $this->saveMsg($fromUsername, $mediaId.$format, $resultStr);
                 }
 
         }else {
@@ -92,6 +116,25 @@ class wechatCallbackapiTest
         }
         else
             echo "Log file open error!";
+    }
+
+    private function http_get_data($mediaId, $format) {
+        if(!file_exists("tmp"))
+            mkdir("tmp");
+        $ch = curl_init ();
+        curl_setopt ( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
+        curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt ( $ch, CURLOPT_URL, "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".TOKEN."&media_id=".$mediaId );
+        ob_start ();
+        curl_exec ( $ch );
+        $return_content = ob_get_contents ();
+        ob_end_clean ();
+
+        $return_code = curl_getinfo ( $ch, CURLINFO_HTTP_CODE );
+
+        $filename = $mediaId.$format;
+        $fp= @fopen("tmp/".$filename,"a"); //将文件绑定到流 
+        fwrite($fp,$return_content);
     }
 
 	public function checkSignature()
