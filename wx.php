@@ -6,7 +6,16 @@
 //define your token
 define("TOKEN", "cool2645");
 $wechatObj = new wechatCallbackapiTest();
-$wechatObj->valid();
+//$wechatObj->valid();
+
+if($wechatObj->checkSignature())
+{
+    $wechatObj->responseMsg();
+}
+else
+{
+    echo "Invalid access!";
+}
 
 class wechatCallbackapiTest
 {
@@ -60,7 +69,7 @@ class wechatCallbackapiTest
         }
     }
 		
-	private function checkSignature()
+	public function checkSignature()
 	{
         // you must define TOKEN by yourself
         if (!defined("TOKEN")) {
