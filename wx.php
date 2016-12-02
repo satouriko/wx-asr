@@ -5,6 +5,8 @@
 
 //define your token
 define("TOKEN", "cool2645");
+define("APP_KEY", "");
+define("APP_SECRET", "");
 $wechatObj = new wechatCallbackapiTest();
 //$wechatObj->valid();
 
@@ -119,12 +121,14 @@ class wechatCallbackapiTest
     }
 
     private function http_get_data($mediaId, $format) {
-        if(!file_exists("tmp"))
+		$tokenObj = file_get_contents("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".APP_KEY."&secret=".APP_SECRET);
+        $token = json_decode($tokenObj);
+		if(!file_exists("tmp"))
             mkdir("tmp");
         $ch = curl_init ();
         curl_setopt ( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
         curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, false );
-        curl_setopt ( $ch, CURLOPT_URL, "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".TOKEN."&media_id=".$mediaId );
+        curl_setopt ( $ch, CURLOPT_URL, "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=".$token->access_token."&media_id=".$mediaId );
         ob_start ();
         curl_exec ( $ch );
         $return_content = ob_get_contents ();
