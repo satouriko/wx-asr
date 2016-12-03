@@ -1,5 +1,7 @@
-# Wechat CSR
+# Wechat ASR
 
-Continuous Speech Recognition for my Pi-car.
+Automatic Speech Recognition for my Pi-car.
 
 Using Wechat develop API.
+Using Wechat Voice Recognition API.
+Using Baidu Automatic Speech Recognition REST API.
