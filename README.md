@@ -10,6 +10,6 @@ Using Baidu Automatic Speech Recognition REST API.
 
 To use this(I suppose except me nobody else will use it however I write it for myself),
 
-Fill in the constant in wx.php.  
+Fill in the constants in wx.php.  
 Don't forget to **`chmod 777 tmp`** and **`chmod 666 msglog.log`**.  
 Uncomment `$wechatObj->valid();` in wx.php if you'd like to valid your wechat public account.

@@ -1,83 +1,46 @@
-<html lang="zh_CN"><head>
-<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Pi-Car语音控制</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://js.aq.qq.com/js/aq_common.js"></script>
-    <script type="text/javascript">if(window.top!== window.self){top.location=self.location;}</script>
-    <link rel="shortcut icon" href="https://res.wx.qq.com/zh_CN/htmledition/v2/images/favicon31e225.ico" type="image/x-icon">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pi-Car 语音控制</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/zh_CN/htmledition/v2/css/base/base31e225.css">
     <!--[if lt IE 9]>
-      <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/es5-shim31e225.js"></script>
-      <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/es5-sham31e225.js"></script>
-      <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/html5shiv31e225.js"></script>
+    <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/es5-shim31e225.js"></script>
+    <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/es5-sham31e225.js"></script>
+    <script src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/html5shiv31e225.js"></script>
     <![endif]-->
     <!--[if lte IE 8]>
     <script type="text/javascript" src="https://res.wx.qq.com/zh_CN/htmledition/v2/third_party/json331e225.js"></script>
     <link rel="stylesheet" href="https://res.wx.qq.com/zh_CN/htmledition/v2/css/widget/icon.css31e225.css"/>
     <![endif]-->
+    <link rel="stylesheet" href="https://res.wx.qq.com/connect/zh_CN/htmledition/style/impowerApp29579a.css">
+    <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/jquery.min29f55f.js"></script>
 </head>
-<body draggable="false" mm-action-track="" track-type="resize" ng-controller="appController" ng-class="{loaded:isLoaded,unlogin:isUnLogin}" ng-click="appClick($event)" class="ng-scope ng-isolate-scope unlogin">
-    <canvas style="position:absolute;top:0;left:0;bottom:0;right:0;z-index:-1;width:100%;height:100%;" id="heroCanvas"></canvas>
-
-    <!--[if lt IE 8]>
-    <p class="browsehappy">
-      你正在使用一个<strong>过时</strong>的浏览器。请<a class="link" href="http://browsehappy.com" target="_blank">升级你的浏览器</a>以查看此页面。</p>
-    </p>
-    <![endif]-->
-
-    <!--BEGIN login-->
-    <!-- ngIf: true --><div class="login ng-scope" ng-controller="loginController" ng-if="true">
-
-        <!--BEGIN logo-->
-        <div class="logo">
-            <i class="web_wechat_login_logo"></i>
-        </div>
-        <!--END logo-->
-        <!--BEGIN login_box-->
-        <div class="login_box">
-            <div class="qrcode" ng-class="">
-                <img class="img" src="qrcode.jpg">
-                <p class="sub_title">扫描二维码关注微信公众号</p>
-				<h4 class="sub_title">发送语音消息测试语音识别结果</h4>
-                <div class="extension">
-                    <div class="item">
-                        <i class="icon web_wechat_login_phone_icon"></i>
-                        <div class="cont">
-                            <h4 class="title">登录手机微信</h4>
-                            <p class="desc">
-                                手机上<!-- ngIf: lang == 'zh_CN' --><a ng-if="lang == 'zh_CN'" href="http://weixin.qq.com/cgi-bin/readtemplate?t=weixin_download_list&amp;lang=zh_CN" target="_blank" class="ng-scope">安装</a><!-- end ngIf: lang == 'zh_CN' --><!-- ngIf: lang == 'zh_TW' --><!-- ngIf: lang != 'zh_CN' && lang != 'zh_TW' -->并登录微信</p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <i class="icon web_wechat_login_scan_icon"></i>
-                        <div class="cont">
-                            <h4 class="title">进入“扫一扫”</h4>
-                            <p class="desc">从“发现”，进入“扫一扫”，扫码关注微信公众号</p>
-                        </div>
-                    </div>
+<body style="background-color: rgb(51, 51, 51); padding: 50px;">
+<div class="main impowerBox">
+    <div class="loginPanel normalPanel">
+        <div class="title">Pi-Car 语音控制</div>
+        <div class="waiting panelContent">
+            <div class="wrp_code"><img class="qrcode lightBorder" src="qrcode.jpg" /></div>
+            <div class="info">
+                <div class="status status_browser js_status js_status normal" id="wx_default_tip">
+                    <p>扫描二维码关注微信公众号</p>
+                    <p>发送语音消息测试语音识别结果</p>
                 </div>
             </div>
         </div>
-        <!--END login_box-->
-        <!--BEGIN lang-->
-        <div class="lang">
-			<a class="lang-item" href="https://github.com/hudson6666/wx-asr">项目代码仓库</a>
-            <span class="sep"></span>
-			<a class="lang-item" href="msglog.log">查看交互日志</a>
-            <span class="sep"></span>
-			<a class="lang-item" href="tmp">下载语音文件</a>
-        </div>
-
-        <!--END lang-->
-        <!--BEGIN copyright-->
-        <div class="copyright">
-			<p class="desc">Lijiahao All Rights Reserved.</p>
-            <p class="desc">Theme by © Tencent Inc.</p>
-        </div>
-        <!--END copyright-->
-    </div><!-- end ngIf: true -->
-    <!--END login-->
-
-</body><div></div></html>
+    </div>
+    <div class="lang">
+        <a class="lang-item" href="https://github.com/hudson6666/wx-asr">项目代码仓库</a>
+        <span class="sep"></span>
+        <a class="lang-item" href="msglog.log">查看交互日志</a>
+        <span class="sep"></span>
+        <a class="lang-item" href="tmp">下载语音文件</a>
+        <br>
+        <a class="lang-item">Lijiahao All Rights Reserved.</a>
+        <span class="sep"></span>
+        <a class="lang-item">Theme by © Tencent Inc.</a>
+    </div>
+</div>
+</body>
+</html>
