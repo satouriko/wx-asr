@@ -74,7 +74,7 @@ class wechatCallbackapiTest
 							<FuncFlag>0</FuncFlag>
 							</xml>";
                     $msgType = "text";
-                    $contentStr = "微信语音识别：".$reco."<br>百度语音识别：".$reco_baidu;
+                    $contentStr = "微信语音识别：".$reco."\n百度语音识别：".$reco_baidu;
                     $resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
                     echo $resultStr;
                     $this->saveMsg($fromUsername, $mediaId.".".$format, $resultStr);
